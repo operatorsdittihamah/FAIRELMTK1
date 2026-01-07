@@ -74,7 +74,7 @@ h1{text-align:center}
 
 <body>
 <div class="container">
-  <h1>Ujian Matematika Kelas 7 Semester 2 Bersama Fairel Learning Centre</h1>
+  <h1>Ujian Matematika Kelas 7 Semester 2 Bersama Fairel</h1>
 
   <div class="timer" id="timer">⏱ 01:00:00</div>
   <div class="progress"><div class="bar" id="bar"></div></div>
@@ -83,6 +83,10 @@ h1{text-align:center}
     <div class="question" id="question"></div>
     <div class="options" id="options"></div>
     <button class="next-btn" onclick="nextQuestion()">Soal Berikutnya</button>
+    <button class="next-btn" onclick="prevQuestion()">⬅ Soal Sebelumnya</button>
+
+
+    
     <div class="score-box" id="scoreBox"></div>
     <div class="explanation" id="explanation"></div>
   </div>
@@ -196,11 +200,15 @@ function nextQuestion(){
 
 function finish(){
   clearInterval(timerInt);
-  document.getElementById("question").innerText="Ujian Selesai";
+  document.getElementById("question").innerText="Ujian Selesai 🎉";
   document.getElementById("options").innerHTML="";
   document.getElementById("explanation").style.display="none";
-  document.getElementById("scoreBox").innerText="SKOR AKHIR: "+score.toFixed(1);
+
+  document.getElementById("scoreBox").innerHTML =
+    "SKOR AKHIR: " + score.toFixed(1) +
+    "<br><br><button class='next-btn' onclick='restartExam()'>🔁 Mulai Ulang</button>";
 }
+
 
 function dropCoin(){
   for(let i=0;i<5;i++){
@@ -227,6 +235,24 @@ function updateTimer(){
 const timerInt=setInterval(updateTimer,1000);
 
 loadQuestion();
+
+
+function prevQuestion(){
+  if(index > 0){
+    index--;
+    loadQuestion();
+  }
+}
+
+
+function restartExam(){
+  index = 0;
+  score = 0;
+  totalTime = 3600;
+  loadQuestion();
+  timerInt = setInterval(updateTimer,1000);
+}
+
 </script>
 </body>
 </html>
