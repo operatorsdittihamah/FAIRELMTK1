@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ujian Matematika Kelas 7 Semester 2</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI,Arial;
+  background:linear-gradient(135deg,#5b1d6b,#2c0f3a);
+  color:#fff;
+}
+.container{max-width:1100px;margin:auto;padding:20px}
+h1{text-align:center}
+.question-box{
+  background:#3a1452;
+  padding:25px;
+  border-radius:16px;
+}
+.question{font-size:24px;margin-bottom:20px}
+.options{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+.option{
+  padding:18px;
+  font-size:20px;
+  border-radius:14px;
+  cursor:pointer;
+  text-align:center;
+  font-weight:bold;
+}
+.a{background:#1e88e5}
+.b{background:#43a047}
+.c{background:#f9a825;color:#000}
+.d{background:#e53935}
+.option.correct{background:#00c853!important}
+.option.wrong{background:#d50000!important}
+.next-btn{
+  margin-top:20px;
+  padding:15px 30px;
+  font-size:20px;
+  border:none;
+  border-radius:12px;
+  background:#00acc1;
+  color:#fff;
+  cursor:pointer;
+}
+.score-box{font-size:22px;margin-top:10px}
+.explanation{
+  display:none;
+  background:#2a0d3b;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+.timer{text-align:center;font-size:22px;margin-bottom:10px}
+.progress{height:8px;background:#222;border-radius:5px;overflow:hidden}
+.bar{height:100%;background:#00e5ff;width:100%}
+.coin{
+  position:fixed;
+  top:-40px;
+  font-size:32px;
+  animation:fall 1s linear forwards;
+}
+@keyframes fall{
+  to{top:100vh;opacity:0}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Ujian Matematika Kelas 7 Semester 2</h1>
+
+  <div class="timer" id="timer">⏱ 01:00:00</div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+
+  <div class="question-box">
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <button class="next-btn" onclick="nextQuestion()">Soal Berikutnya</button>
+    <div class="score-box" id="scoreBox"></div>
+    <div class="explanation" id="explanation"></div>
+  </div>
+</div>
+
+<audio id="soundTrue" src="correct.mp3"></audio>
+<audio id="soundFalse" src="incorrect.mp3"></audio>
+
+<script>
+// ================= SOAL 40 =================
+const questions = [
+{q:"Suhu kota −4°C turun 7°C. Suhu sekarang …",options:["3°C","−11°C","−1°C","11°C"],correct:1,solution:"−4 − 7 = −11"},
+{q:"−18 + 25 = …",options:["−43","7","43","−7"],correct:1,solution:"−18 + 25 = 7"},
+{q:"Penyelam di −12 m naik 5 m lalu turun 9 m. Posisi akhir …",options:["−16","−14","−8","8"],correct:0,solution:"−12 + 5 − 9 = −16"},
+{q:"−6 × −9 = …",options:["−54","54","15","−15"],correct:1,solution:"Negatif × negatif = positif"},
+{q:"40 − (−18) − 12 = …",options:["46","70","10","22"],correct:0,solution:"40 + 18 − 12"},
+{q:"Bilangan antara −10 dan −5 adalah …",options:["−11","−8","−5","0"],correct:1,solution:"−9,−8,−7,−6"},
+{q:"(−3)² − 5 = …",options:["14","4","−4","−14"],correct:1,solution:"9 − 5 = 4"},
+{q:"a=−4, b=7, a+b = …",options:["−11","11","3","−3"],correct:2,solution:"−4 + 7 = 3"},
+
+{q:"3/4 + 5/8 = …",options:["1 1/8","1 3/8","1 5/8","2"],correct:1,solution:"11/8 = 1 3/8"},
+{q:"Pecahan senilai 12/18 adalah …",options:["2/3","3/4","4/5","5/6"],correct:0,solution:"12÷6 / 18÷6"},
+{q:"Desimal 7/20 adalah …",options:["0,25","0,35","0,375","0,75"],correct:1,solution:"7 ÷ 20"},
+{q:"5/6 − 1/4 = …",options:["7/12","3/12","5/12","1/2"],correct:0,solution:"10/12 − 3/12"},
+{q:"Urutan terkecil 0,6 ; 2/3 ; 5/8 …",options:["5/8,0,6,2/3","0,6,5/8,2/3","2/3,0,6,5/8","5/8,2/3,0,6"],correct:0,solution:"0,625 < 0,6 < 0,67"},
+{q:"2 1/3 + 1 5/6 = …",options:["3 1/6","4 1/6","3 2/6","4 2/6"],correct:1,solution:"25/6"},
+{q:"Pecahan terbesar …",options:["3/5","5/6","7/10","4/5"],correct:1,solution:"≈0,83"},
+{q:"x=3/4, 2x= …",options:["3/4","3/2","6/4","1/2"],correct:1,solution:"6/4 = 3/2"},
+
+{q:"Rasio 3:5 total 64.000. Uang Andi …",options:["24.000","32.000","40.000","48.000"],correct:0,solution:"3/8 × 64.000"},
+{q:"Perbandingan 4:3 panjang 20. Lebar …",options:["12","15","16","18"],correct:1,solution:"20÷4×3"},
+{q:"6 pensil 9.000 → 10 pensil …",options:["12.000","14.000","15.000","18.000"],correct:2,solution:"1.500 × 10"},
+{q:"8 : 12 = …",options:["2:3","3:2","4:6","6:4"],correct:0,solution:"÷4"},
+{q:"Umur 7:5 kakak 21. Adik …",options:["10","12","15","18"],correct:2,solution:"×3"},
+{q:"Skala 1:200.000 jarak 10 km = …",options:["5 cm","10 cm","20 cm","50 cm"],correct:0,solution:"1.000.000 ÷ 200.000"},
+{q:"Rasio 9:11 jumlah 40. Perempuan …",options:["18","20","22","24"],correct:2,solution:"11×2"},
+{q:"15 : x = 3 : 5 → x = …",options:["20","25","30","35"],correct:1,solution:"15×5÷3"},
+
+{q:"6x + 4y − 2x + y = …",options:["8x+5y","4x+5y","6x+y","4x+3y"],correct:1,solution:"Gabung suku"},
+{q:"x=5, 3x−7 = …",options:["8","15","−8","22"],correct:0,solution:"15−7"},
+{q:"Selisih dua kali bilangan dan 9 …",options:["2x+9","9−2x","2x−9","x−18"],correct:2,solution:"2x−9"},
+{q:"4(2a−3) = …",options:["8a−3","8a−12","2a−12","6a"],correct:1,solution:"Distribusi"},
+{q:"5x+7=32, x= …",options:["3","4","5","6"],correct:2,solution:"x=5"},
+{q:"(x+4)+(2x−6)= …",options:["3x−2","3x+10","x−2","x+10"],correct:0,solution:"Gabung"},
+{q:"a=3,b=−4, 2a+b = …",options:["2","4","6","10"],correct:0,solution:"6−4"},
+{q:"(3x−5)−(x−2)= …",options:["2x−3","4x−7","2x−7","x−3"],correct:0,solution:"3x−5−x+2"},
+
+{q:"Bangun sebangun memiliki …",options:["Luas sama","Sudut sama & sisi sebanding","Keliling sama","Sisi sama"],correct:1,solution:"Definisi"},
+{q:"Sisi A:B=2:3, A=8, B= …",options:["10","12","14","16"],correct:1,solution:"×4"},
+{q:"Skala 1:50, panjang 15 m = …",options:["15 cm","30 cm","50 cm","75 cm"],correct:1,solution:"1500÷50"},
+{q:"Persegi sebangun 3:5, luas = …",options:["3:5","6:10","9:25","15:25"],correct:2,solution:"Kuadrat"},
+{q:"Bayangan 6 m, tiang 2 m tinggi 4 m. Pohon …",options:["8","10","12","14"],correct:2,solution:"Perbandingan"},
+{q:"Sudut segitiga sebangun …",options:["Berbeda","Sama besar","180°","Tumpul"],correct:1,solution:"Sifat"},
+{q:"Skala 1:25.000, 4 cm = …",options:["1 km","2 km","4 km","10 km"],correct:1,solution:"100.000 cm"},
+{q:"Sisi 1:4 luas kecil 9. Luas besar …",options:["36","81","144","256"],correct:2,solution:"4²×9"}
+];
+
+// ============ LOGIC ============
+let index=0,score=0,locked=false;
+let totalTime=3600;
+const nilaiPerSoal=100/questions.length;
+
+const benar=document.getElementById("soundTrue");
+const salah=document.getElementById("soundFalse");
+
+function loadQuestion(){
+  locked=false;
+  document.getElementById("explanation").style.display="none";
+  document.getElementById("scoreBox").innerText="Skor: "+score.toFixed(1);
+  const q=questions[index];
+  document.getElementById("question").innerText=(index+1)+". "+q.q;
+  const opt=document.getElementById("options");
+  opt.innerHTML="";
+  q.options.forEach((o,i)=>{
+    const d=document.createElement("div");
+    d.className="option "+["a","b","c","d"][i];
+    d.innerText=o;
+    d.onclick=()=>selectAnswer(d,i);
+    opt.appendChild(d);
+  });
+}
+
+function selectAnswer(el,i){
+  if(locked) return;
+  locked=true;
+  const q=questions[index];
+  document.querySelectorAll(".option")[q.correct].classList.add("correct");
+
+  if(i===q.correct){
+    score+=nilaiPerSoal;
+    benar.play();
+    dropCoin();
+  }else{
+    el.classList.add("wrong");
+    salah.play();
+  }
+
+  const exp=document.getElementById("explanation");
+  exp.style.display="block";
+  exp.innerHTML="<b>Kunci Jawaban:</b> "+q.options[q.correct]+"<br><b>Pembahasan:</b> "+q.solution;
+}
+
+function nextQuestion(){
+  if(index<questions.length-1){
+    index++;
+    loadQuestion();
+  }else{
+    finish();
+  }
+}
+
+function finish(){
+  clearInterval(timerInt);
+  document.getElementById("question").innerText="Ujian Selesai";
+  document.getElementById("options").innerHTML="";
+  document.getElementById("explanation").style.display="none";
+  document.getElementById("scoreBox").innerText="SKOR AKHIR: "+score.toFixed(1);
+}
+
+function dropCoin(){
+  for(let i=0;i<5;i++){
+    const c=document.createElement("div");
+    c.className="coin";
+    c.style.left=Math.random()*100+"%";
+    c.innerText="🪙";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
+
+// TIMER 1 JAM
+function updateTimer(){
+  let h=Math.floor(totalTime/3600);
+  let m=Math.floor((totalTime%3600)/60);
+  let s=totalTime%60;
+  document.getElementById("timer").innerText=
+  `⏱ ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  document.getElementById("bar").style.width=(totalTime/3600*100)+"%";
+  if(totalTime<=0) finish();
+  totalTime--;
+}
+const timerInt=setInterval(updateTimer,1000);
+
+loadQuestion();
+</script>
+</body>
+</html>
